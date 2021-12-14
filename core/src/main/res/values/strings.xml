@@ -202,8 +202,8 @@
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="delete_episode_label">Delete Episode</string>
     <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">1 downloaded episode deleted.</item>
-        <item quantity="other">%d downloaded episodes deleted.</item>
+        <item quantity="one">%d episode selected, %d download deleted.</item>
+        <item quantity="other">%d episodes selected, %d download(s) deleted.</item>
     </plurals>
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
@@ -237,6 +237,7 @@
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="skip_episode_label">Skip episode</string>
+    <string name="playback_speed_label">Playback speed</string>
     <string name="reset_position">Reset Playback Position</string>
     <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>

@@ -200,16 +200,16 @@
                     android:clickable="false"/>
 
             <de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView
-                    android:id="@+id/butPlaybackSpeed"
-                    android:layout_width="@dimen/audioplayer_playercontrols_length"
-                    android:layout_height="@dimen/audioplayer_playercontrols_length"
-                    android:layout_toLeftOf="@id/butRev"
-                    android:layout_toStartOf="@id/butRev"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/playback_speed"
-                    tools:srcCompat="@drawable/ic_playback_speed"
-                    app:foregroundColor="?attr/action_icon_color"/>
+                android:id="@+id/butPlaybackSpeed"
+                android:layout_width="@dimen/audioplayer_playercontrols_length"
+                android:layout_height="@dimen/audioplayer_playercontrols_length"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/butRev"
+                android:layout_toLeftOf="@id/butRev"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/playback_speed"
+                app:foregroundColor="?attr/action_icon_color"
+                tools:srcCompat="@drawable/ic_playback_speed" />
 
             <TextView
                     android:id="@+id/txtvPlaybackSpeed"

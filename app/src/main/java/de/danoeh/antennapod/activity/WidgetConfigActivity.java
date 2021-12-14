@@ -23,6 +23,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
+    private CheckBox ckPlayBackSpeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +82,12 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
+        ckPlayBackSpeed = findViewById(R.id.ckPlayBackSpeed);
+        ckPlayBackSpeed.setOnClickListener(v -> displayPreviewPanel());
     }
 
     private void displayPreviewPanel() {
-        boolean showExtendedPreview = ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
+        boolean showExtendedPreview = ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked() || ckPlayBackSpeed.isChecked();
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
@@ -92,6 +95,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.butPlayBackSpeed).setVisibility(ckPlayBackSpeed.isChecked() ? View.VISIBLE : View.GONE);
     }
 
     private void confirmCreateWidget(View v) {
@@ -103,6 +107,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_SPEED + appWidgetId,ckPlayBackSpeed.isChecked());
         editor.apply();
 
         Intent resultValue = new Intent();

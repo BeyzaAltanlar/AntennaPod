@@ -18,12 +18,15 @@
             android:id="@+id/butPlay"
             android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="match_parent"
-            android:contentDescription="@string/play_label"
             android:layout_alignParentEnd="true"
-            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             android:background="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter"
+            android:contentDescription="@string/play_label"
             android:padding="8dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_widget_play" />
 
         <LinearLayout
@@ -40,9 +43,9 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher_round"
+                android:layout_margin="12dp"
                 android:importantForAccessibility="no"
-                android:layout_margin="12dp" />
+                android:src="@mipmap/ic_launcher_round" />
 
             <LinearLayout
                 android:id="@+id/layout_center"
@@ -65,8 +68,8 @@
                     android:id="@+id/txtvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -92,9 +95,9 @@
                         android:id="@+id/butRew"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="2dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/rewind_label"
-                        android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_fast_rewind" />
 
@@ -102,9 +105,9 @@
                         android:id="@+id/butPlayExtended"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="2dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/play_label"
-                        android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_play" />
 
@@ -112,9 +115,9 @@
                         android:id="@+id/butFastForward"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="2dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/fast_forward_label"
-                        android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_fast_forward" />
 
@@ -122,11 +125,24 @@
                         android:id="@+id/butSkip"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="2dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/skip_episode_label"
-                        android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_skip" />
+
+                    <ImageButton
+                        android:id="@+id/butPlayBackSpeed"
+                        android:layout_width="36dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/playback_speed_label"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_playback_speed_white"
+                        />
+
+
 
                 </LinearLayout>
 

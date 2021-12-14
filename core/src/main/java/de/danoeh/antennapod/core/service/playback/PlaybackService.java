@@ -44,6 +44,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -197,6 +198,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
+
+    private int speedState = 1;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -648,6 +651,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Handles media button events
      * return: keycode was handled
      */
+
     private boolean handleKeycode(int keycode, boolean notificationButton) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
@@ -688,6 +692,66 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                     return true;
+                }
+                return false;
+            case KeyEvent.KEYCODE_ZENKAKU_HANKAKU:
+                 float currentSpeed = getCurrentPlaybackSpeed();
+                 if(currentSpeed >=2.0f ) {
+
+                    if (status == PlayerStatus.PLAYING) {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(1.00f);
+                        if (mediaPlayer.getCurrentMediaType() == MediaType.VIDEO) {
+                            UserPreferences.setVideoPlaybackSpeed(1.00f);
+
+                        } else {
+                            UserPreferences.setPlaybackSpeed(1.00f);
+                        }
+                        setSpeed(1.00f);
+                        speedState = 2;
+                        return true;
+                    }
+                }
+                else if(currentSpeed >= 1.0f && currentSpeed < 1.25f ) {
+                    if (status == PlayerStatus.PLAYING) {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(1.25f);
+                        if (mediaPlayer.getCurrentMediaType() == MediaType.VIDEO) {
+                            UserPreferences.setVideoPlaybackSpeed(1.25f);
+
+                        } else {
+                            UserPreferences.setPlaybackSpeed(1.25f);
+                        }
+                        setSpeed(1.25f);
+                        speedState = 3;
+                        return true;
+                    }
+                }
+                else if(currentSpeed >= 1.25f && currentSpeed < 1.5f) {
+                    if (status == PlayerStatus.PLAYING) {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(1.5f);
+                        if (mediaPlayer.getCurrentMediaType() == MediaType.VIDEO) {
+                            UserPreferences.setVideoPlaybackSpeed(1.5f);
+
+                        } else {
+                            UserPreferences.setPlaybackSpeed(1.5f);
+                        }
+                        setSpeed(1.5f);
+                        speedState = 4;
+                        return true;
+                    }
+                }
+                else if(currentSpeed >= 1.5f && currentSpeed < 2.0f) {
+                    if (status == PlayerStatus.PLAYING) {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(2.0f);
+                        if (mediaPlayer.getCurrentMediaType() == MediaType.VIDEO) {
+                            UserPreferences.setVideoPlaybackSpeed(2.0f);
+
+                        } else {
+                            UserPreferences.setPlaybackSpeed(2.0f);
+                        }
+                        setSpeed(2.0f);
+                        speedState = 1;
+                        return true;
+                    }
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
@@ -1231,8 +1295,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_PAUSE
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
                 | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                | PlaybackStateCompat.ACTION_SEEK_TO
-                | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
+                | PlaybackStateCompat.ACTION_SEEK_TO;
 
         if (useSkipToPreviousForRewindInLockscreen()) {
             // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
@@ -1886,12 +1949,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onSeekTo(long pos) {
             Log.d(TAG, "onSeekTo()");
             seekTo((int) pos);
-        }
-
-        @Override
-        public void onSetPlaybackSpeed(float speed) {
-            Log.d(TAG, "onSetPlaybackSpeed()");
-            setSpeed(speed);
         }
 
         @Override

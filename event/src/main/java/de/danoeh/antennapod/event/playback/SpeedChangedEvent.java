@@ -10,4 +10,5 @@ public class SpeedChangedEvent {
     public float getNewSpeed() {
         return newSpeed;
     }
+
 }

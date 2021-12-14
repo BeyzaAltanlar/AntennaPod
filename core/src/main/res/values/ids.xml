@@ -11,7 +11,7 @@
     <item name="skip_episode_item" type="id"/>
     <item name="move_to_top_item" type="id"/>
     <item name="move_to_bottom_item" type="id"/>
-
+    <item name="playback_speed_item" type="id"/>
     <!-- View types -->
     <item name="view_type_episode_item" type="id"/>
 
@@ -23,4 +23,5 @@
     <item name="notification_auto_download_report" type="id"/>
     <item name="notification_playing" type="id"/>
     <item name="notification_streaming_confirmation" type="id"/>
+    <item name="butPlayBackSpeed" type="id" />
 </resources>

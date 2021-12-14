@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -32,20 +36,30 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+
+
+
+
 
 /**
  * Updates the state of the player widget.
  */
-public abstract class WidgetUpdater {
+public abstract class WidgetUpdater extends AppWidgetProvider {
     private static final String TAG = "WidgetUpdater";
+    private PlaybackController speedController;
 
-    public static class WidgetState {
+    private static final String PLAYBACK_SPEED_CHANGE = "playbackSpeedButtonClicked";
+
+    public static class WidgetState{
         final Playable media;
         final PlayerStatus status;
         final int position;
         final int duration;
         final float playbackSpeed;
         final boolean isCasting;
+
+
 
         public WidgetState(Playable media, PlayerStatus status, int position, int duration,
                            float playbackSpeed, boolean isCasting) {
@@ -66,17 +80,21 @@ public abstract class WidgetUpdater {
      * Update the widgets with the given parameters. Must be called in a background thread.
      */
     public static void updateWidget(Context context, WidgetState widgetState) {
+
         if (!PlayerWidget.isEnabled(context) || widgetState == null) {
             return;
         }
 
         PendingIntent startMediaPlayer;
+
+
         if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO
                 && !widgetState.isCasting) {
             startMediaPlayer = new VideoPlayerActivityStarter(context).getPendingIntent();
         } else {
             startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
         }
+
         RemoteViews views;
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
@@ -141,6 +159,10 @@ public abstract class WidgetUpdater {
                     createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
             views.setOnClickPendingIntent(R.id.butSkip,
                     createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+
+            views.setOnClickPendingIntent(R.id.butPlayBackSpeed,createMediaButtonIntent(context, KeyEvent.KEYCODE_ZENKAKU_HANKAKU));
+
+
         } else {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
@@ -172,19 +194,37 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+            boolean showSpeed = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SPEED +id,false);
 
-            if (showRewind || showSkip || showFastForward) {
+            if (showRewind || showSkip || showFastForward || showSpeed) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
                 views.setInt(R.id.butPlay, "setVisibility", View.GONE);
                 views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+                views.setInt(R.id.butPlayBackSpeed,"setVisibility",showSpeed ? View.VISIBLE:View.GONE);
             }
 
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
             views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
 
             manager.updateAppWidget(id, views);
+        }
+    }
+
+    protected static  PendingIntent getPendingSelfIntent(Context context,String action){
+        Intent intent = new Intent(context, WidgetUpdater.class);
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+    }
+
+    public void onReceive(Context context,Intent intent){
+
+        super.onReceive(context,intent);
+
+        if(PLAYBACK_SPEED_CHANGE.equals(intent.getAction())){
+            speedController.setPlaybackSpeed(2.0f);
+
         }
     }
 

@@ -19,6 +19,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public static final String KEY_WIDGET_SKIP = "widget_skip";
     public static final String KEY_WIDGET_FAST_FORWARD = "widget_fast_forward";
     public static final String KEY_WIDGET_REWIND = "widget_rewind";
+    public static final String KEY_WIDGET_SPEED = "widget_playback_speed";
     public static final int DEFAULT_COLOR = 0x00262C31;
 
     @Override
@@ -59,6 +60,7 @@ public class PlayerWidget extends AppWidgetProvider {
             prefs.edit().remove(KEY_WIDGET_REWIND + appWidgetId).apply();
             prefs.edit().remove(KEY_WIDGET_FAST_FORWARD + appWidgetId).apply();
             prefs.edit().remove(KEY_WIDGET_SKIP + appWidgetId).apply();
+            prefs.edit().remove(KEY_WIDGET_SPEED + appWidgetId).apply();
         }
         super.onDeleted(context, appWidgetIds);
     }
